@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:orientation="vertical"
+    android:background="@drawable/gg"
+    >
+
+    <EditText
+        android:id="@+id/book_nameEdit_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="enter book name"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="#000"
+        android:layout_margin="10dp"
+        />
+
+    <Button
+        android:id="@+id/search_id"
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="#000"
+        android:text="search"
+        android:layout_margin="10dp"
+        android:background="@drawable/b1"
+        />
+
+    <ListView
+        android:id="@+id/listView_id"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:listitem="@layout/list_item"
+        android:padding="5dp"
+        >
+
+    </ListView>
+
+
+
+
+
+</LinearLayout>
