@@ -11,6 +11,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
@@ -20,6 +21,35 @@ import java.util.ArrayList;
 import javax.net.ssl.HttpsURLConnection;
 
 public class Network {
+
+    public static  String title,author,publisher,date,description,thumbnail;
+
+    public static ArrayList<DataClass> fetchBookData(String reqUrl)  {
+
+        URL url1 = null;
+        try {
+            url1 = creatUrl ( reqUrl );
+        } catch (MalformedURLException e) {
+            e.printStackTrace ();
+        }
+
+        String jasonRes = null;
+
+        try {
+            jasonRes = MakeHttpRequest(url1);
+        } catch (IOException e) {
+            e.printStackTrace ();
+        }
+
+        ArrayList<DataClass> book1 = null;
+        try {
+            book1 = extractFromJason ( jasonRes );
+        } catch (JSONException e) {
+            e.printStackTrace ();
+        }
+
+        return book1;
+    }
 
     public static URL creatUrl (String stringUrl) throws MalformedURLException {
 
@@ -43,6 +73,8 @@ public class Network {
         HttpsURLConnection urlConn = null;
         InputStream inST = null;
 
+        urlConn = (HttpsURLConnection) uuu.openConnection();
+
         urlConn.setRequestMethod ( "GET" );
 
         urlConn.connect ();
@@ -50,7 +82,7 @@ public class Network {
         if (urlConn.getResponseCode ()==200)
         {
             inST = urlConn.getInputStream ();
-            jasonResponse = readFromStreamm(inST);
+            jasonResponse = readFromStream(inST);
         }
         if (urlConn != null)
         {
@@ -66,7 +98,7 @@ public class Network {
         return jasonResponse;
     }
 
-    public static String readFromStreamm (InputStream inST) throws IOException {
+    public static String readFromStream (InputStream inST) throws IOException {
 
         StringBuilder stBuild = new StringBuilder (  );
 
@@ -75,34 +107,82 @@ public class Network {
         {
             InputStreamReader inSTreader = new InputStreamReader ( inST , Charset.defaultCharset () );
 
-            BufferedReader bfRearer = new BufferedReader ( inSTreader );
-            String line = bfRearer.readLine ();
+            BufferedReader bfReader = new BufferedReader ( inSTreader );
+            String line = bfReader.readLine ();
 
             while (line != null)
             {
                 stBuild.append ( line );
-                line= bfRearer.readLine ();
+                line= bfReader.readLine ();
             }
         }
         return stBuild.toString ();
 
     }
-    public static ArrayList<DataClass> extractFromJason (String jasonResponse) throws JSONException {
+    public static ArrayList<DataClass> extractFromJason (String jasonBooks) throws JSONException {
 
-        if (TextUtils.isEmpty ( jasonResponse ) && jasonResponse == null)
+        if (TextUtils.isEmpty ( jasonBooks ) && jasonBooks == null)
         {
             return null;
         }
 
         ArrayList<DataClass> bookInfo = new ArrayList<>();
 
-        JSONObject jjj = new JSONObject ( jasonResponse);
-        JSONArray jjjArr = jjj.getJSONArray( "item" );
-         for (int i = 0 ;i < jjjArr.length () ;i++)
+        JSONObject tobJson = new JSONObject (jasonBooks);
+        JSONArray itemsArr = tobJson.getJSONArray( "items" );
+         for (int i = 0 ;i < itemsArr.length () ;i++)
          {
+             JSONObject firstItem = itemsArr.getJSONObject ( i );
+             JSONObject info = firstItem.getJSONObject ( "volumeInfo" );
 
-             JSONObject item = jjjArr.getJSONObject ( i );
-        }
+             if (info.has ( "title" ))
+             {
+                 title = info.getString ( "title" );
+             }else
+             {
+                 title = "Title Not Found";
+             }
+             if (info.has ( "authors" ))
+             {
+                 author = info.getString ( "authors" );
+             }else
+             {
+                 author = "Author Not Found";
+             }
+             if (info.has ( "publisher" ))
+             {
+                 publisher = info.getString ( "publisher" );
+             }else
+             {
+                 publisher = "Publisher Not Found";
+             }
+             if (info.has ( "publishedDate" ))
+             {
+                 date = info.getString ( "publishedDate" );
+             }else
+             {
+                 date = "Date Not Found";
+             }
+             if (info.has ( "description" ))
+             {
+                 description = info.getString ( "description");
+             }else
+             {
+                 description = "Description Not Found";
+             }
+             if (info.has ( "imageLinks" ))
+             {
+                 JSONObject imageUrl = info.getJSONObject ( "imageLinks");
+                 thumbnail = imageUrl.getString ("thumbnail"  );
+
+             }else
+             {
+                 thumbnail = "";
+             }
+
+             bookInfo.add ( new DataClass ( title,author,publisher,date,description,thumbnail ) );
+
+         }
         return bookInfo;
     }
 }

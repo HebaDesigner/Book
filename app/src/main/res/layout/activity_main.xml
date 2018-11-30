@@ -24,7 +24,7 @@
         android:id="@+id/search_id"
         android:layout_width="match_parent"
         android:layout_height="65dp"
-        android:textSize="18sp"
+        android:textSize="20sp"
         android:textStyle="bold"
         android:textColor="#000"
         android:text="search"
@@ -32,18 +32,33 @@
         android:background="@drawable/b1"
         />
 
-    <ListView
-        android:id="@+id/listView_id"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:listitem="@layout/list_item"
-        android:padding="5dp"
-        >
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
-    </ListView>
+        <ListView
+            android:id="@+id/listViewMain_id"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="5dp"
+            tools:listitem="@layout/list_item"
+            android:dividerHeight="1dp"
+            android:divider="#000"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            />
 
 
+        <ProgressBar
+            android:id="@+id/progeressBar_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:indeterminate="true"
+            style="@style/Base.AlertDialog.AppCompat"
+            android:layout_marginLeft="70dp"
+            android:layout_marginRight="70dp"
+            />
 
-
-
+    </RelativeLayout>
 </LinearLayout>

@@ -12,10 +12,13 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 
 public class Adapter  extends ArrayAdapter<DataClass> {
 
+
+    public int position;
     ImageView book_image;
     TextView  book_name ,book_author;
 
@@ -41,12 +44,19 @@ public class Adapter  extends ArrayAdapter<DataClass> {
         book_name.setText ( dataClass.getBookTitle () );
         book_author.setText ( dataClass.getAuthor () );
 
+
+
         Picasso
                 .get()
                 .load(dataClass.getImageUrl ())
                 .placeholder(R.drawable.fantasy)
                 .into(book_image);
+        
+        
 
         return  convertView ;
+        
     }
+
+
 }
