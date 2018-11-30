@@ -38,7 +38,7 @@ public class BookInfo extends AppCompatActivity {
         publisher.setText ( publisher2 );
         date.setText ( date2 );
         description.setText ( description2 );
-//
+
         if (imageUrl2.length () != 0 )
         {
             Picasso.get ()
